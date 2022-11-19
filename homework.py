@@ -3,7 +3,7 @@ import os
 import sys
 import time
 from http import HTTPStatus
-from typing import Dict, List, Union
+from typing import Dict, List
 
 import requests
 import telegram.error
@@ -50,7 +50,7 @@ def send_message(bot: Bot, message: str) -> TelegramError:
 
 
 def get_api_answer(current_timestamp: float) -> Dict:
-    """Обращается к эндпоинту API-сервиса Практикум.Домашка"""
+    """Обращается к эндпоинту API-сервиса Практикум.Домашка."""
     timestamp = current_timestamp or int(time.time())
     params = {'from_date': timestamp}
     response = requests.get(
@@ -68,11 +68,11 @@ def get_api_answer(current_timestamp: float) -> Dict:
 
 
 def check_response(response: Dict) -> List:
-    """Проверяет ответа API сервиса Практикум.Домашка"""
+    """Проверяет ответа API сервиса Практикум.Домашка."""
     try:
         if not isinstance(response, Dict):
             raise(
-                f'Пришедшие данные не являются словарем. '
+                f'Пришедшие данные не являются словарем.'
             )
         else:
             homeworks_reviews = response.get('homeworks')
@@ -103,9 +103,9 @@ def parse_status(homework: Dict) -> str:
 def check_tokens() -> bool:
     """Проверяет наличие всех переменных окружения."""
     if (
-            not TELEGRAM_TOKEN or
-            not TELEGRAM_CHAT_ID or
-            not PRACTICUM_TOKEN
+            not TELEGRAM_TOKEN
+            or not TELEGRAM_CHAT_ID
+            or not PRACTICUM_TOKEN
     ):
         return False
     else:
@@ -114,7 +114,6 @@ def check_tokens() -> bool:
 
 def main() -> None:
     """Основная логика работы бота."""
-
     main_message = 'Сбой в работе программы: '
     bot = Bot(token=TELEGRAM_TOKEN)
     current_timestamp = int(time.time())

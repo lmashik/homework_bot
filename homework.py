@@ -71,16 +71,14 @@ def check_response(response: Dict) -> List:
     """Проверяет ответа API сервиса Практикум.Домашка."""
     try:
         if not isinstance(response, Dict):
-            raise(
-                f'Пришедшие данные не являются словарем.'
-            )
+            raise TypeError('Пришедшие данные не являются словарем.')
         else:
             homeworks_reviews = response.get('homeworks')
     except MyKeyError:
         raise
     else:
         if not isinstance(homeworks_reviews, List):
-            raise Exception('Объект не является списком')
+            raise TypeError('Объект не является списком')
         return homeworks_reviews
 
 

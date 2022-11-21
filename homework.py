@@ -26,7 +26,7 @@ logging.basicConfig(
 PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN')
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
-TELEGRAM_RETRY_TIME = 600
+RETRY_TIME = 600
 
 TOKENS = {
     'TELEGRAM_TOKEN': TELEGRAM_TOKEN,
@@ -169,7 +169,7 @@ def main() -> None:
                 logging.info(f'Отправлено сообщение: {error_message}')
                 prev_message = error_message
         finally:
-            time.sleep(TELEGRAM_RETRY_TIME)
+            time.sleep(RETRY_TIME)
 
 
 if __name__ == '__main__':

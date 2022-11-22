@@ -8,5 +8,9 @@ class SendMessageToTelegramError(Exception):
 	pass
 
 
-class JSONTypeError(json.JSONDecodeError):
+class JSONTypeError(Exception):
+	pass
+
+
+class APIRequestError(Exception):
 	pass

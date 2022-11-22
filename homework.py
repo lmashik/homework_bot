@@ -11,7 +11,7 @@ import telegram.error
 from dotenv import load_dotenv
 from telegram import Bot
 
-from exceptions import JSONTypeError
+from exceptions import JSONTypeError, APIRequestError
 
 load_dotenv()
 
@@ -86,16 +86,18 @@ def get_api_answer(timestamp: float) -> Dict:
             headers=HEADERS,
             params=params
         )
-        if response.status_code != HTTPStatus.OK:
-            raise ConnectionError('Ошибка соединения.')
-    except Exception as error:
-        raise ConnectionError(
+    except requests.RequestException as error:
+        raise APIRequestError(
             'Не удалось получить корректный ответ от API-сервиса.'
         ) from error
+    if response.status_code != HTTPStatus.OK:
+        raise ConnectionError(
+            f'Ошибка соединения. Код ответа: {response.status_code}.'
+        )
     try:
         return response.json()
-    except json.JSONDecodeError:
-        raise JSONTypeError('Ответ - невалидный json.')
+    except json.JSONDecodeError as error:
+        raise JSONTypeError(f'Ответ - невалидный json: {error}.')
 
 
 def check_response(response: Dict) -> List:
@@ -122,8 +124,8 @@ def parse_status(homework: Dict) -> str:
     if 'status' not in homework:
         raise KeyError('Ключа status нет в словаре homework.')
 
-    homework_name = homework.get('homework_name')
-    homework_status = homework.get('status')
+    homework_name = homework['homework_name']
+    homework_status = homework['status']
 
     if homework_status not in HOMEWORK_VERDICTS:
         raise KeyError(

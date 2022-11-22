@@ -1,3 +1,5 @@
+import json
+
 import requests
 
 
@@ -6,8 +8,5 @@ class SendMessageToTelegramError(Exception):
 	pass
 
 
-class APIRequestError(requests.RequestException):
-	"""Ошибка запроса к API-сервису."""
+class JSONTypeError(json.JSONDecodeError):
 	pass
-
-
